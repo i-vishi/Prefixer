@@ -1,0 +1,46 @@
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+
+.idea/caches/
+.idea/copyright/
+.idea/dictionaries/
+.idea/modules.xml
+.idea/markdown-navigator
+.idea/shelf/
+.idea/*
+
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+
+#built application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+build/
+
+#remove studio files
+*.iml
+.idea/*.xml
+
