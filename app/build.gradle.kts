@@ -1,8 +1,21 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
 }
+
+// loading local.properties to fetch APP_ID
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.inputStream().use {
+        localProperties.load(it)
+    }
+}
+
+val openWeatherMapAppId = localProperties["APP_ID"]?.toString() ?: ""
 
 android {
     namespace = "dev.vishalgaur.prefixerapp"
@@ -19,6 +32,9 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField("String", "BASE_URL", "\"https://api.openweathermap.org/\"")
+        buildConfigField("String", "APP_ID", "\"$openWeatherMapAppId\"")
     }
 
     buildTypes {
@@ -39,6 +55,8 @@ android {
     }
     buildFeatures {
         compose = true
+        // Enables generation of BuildConfig class
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
