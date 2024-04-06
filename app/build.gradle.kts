@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -61,6 +62,15 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    // retrofit2 and okHttp3
+    implementation(libs.okHttp3)
+    implementation(libs.retrofit2) {
+        exclude(group = "com.squareup.okhttp3")
+    }
+    implementation(libs.gson)
+    implementation(libs.gsonConvertor)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
