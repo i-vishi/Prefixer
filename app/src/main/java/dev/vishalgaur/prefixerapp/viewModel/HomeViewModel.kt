@@ -20,17 +20,14 @@ class HomeViewModel(private val repo: WeatherRepoImpl) : ViewModel() {
     private var _homeUiDataMLD = MutableLiveData(HomeUiData())
     val homeUiDataMLD: LiveData<HomeUiData> get() = _homeUiDataMLD
 
-    init {
-        getWeatherData(CITY_NAME)
-    }
-
     fun getWeatherData(cityName: String = CITY_NAME) {
+        val location = cityName.ifBlank { CITY_NAME }
         viewModelScope.launch {
             _homeUiDataMLD.value = HomeUiData(isLoading = true)
 
             try {
-                val cityWeatherResponse = repo.getCurrentWeatherDataByCityName(cityName)
-                val forecastResponse = repo.getCityWeatherForecast(cityName)
+                val cityWeatherResponse = repo.getCurrentWeatherDataByCityName(location)
+                val forecastResponse = repo.getCityWeatherForecast(location)
 
                 var cityWeatherData: CityWeatherData? = null
                 var forecastData = mutableListOf<ForecastData>()
