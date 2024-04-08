@@ -1,7 +1,9 @@
 package dev.vishalgaur.prefixerapp.ui.home.components
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -85,6 +87,8 @@ fun SearchTextField(
                 style = MaterialTheme.typography.displaySmall.copy(fontSize = 13.sp),
                 color = Color.Red,
             )
+        } else {
+            Spacer(modifier = Modifier.padding(start = 16.dp, top = 2.dp).height(13.dp))
         }
     }
 }
