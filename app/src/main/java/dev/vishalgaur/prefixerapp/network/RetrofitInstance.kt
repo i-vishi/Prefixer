@@ -14,7 +14,7 @@ object RetrofitInstance {
 
     private fun createInstance(
         baseUrl: String = ApiConstants.BASE_URL,
-        authKey: String = ApiConstants.APP_ID,
+        authKey: String = ApiConstants.WEATHER_APP_ID,
     ): Retrofit {
         return Retrofit.Builder()
             .baseUrl(baseUrl)

@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.parcelize)
 }
 
-// loading local.properties to fetch APP_ID
+// loading local.properties to fetch WEATHER_APP_ID
 val localProperties = Properties()
 val localPropertiesFile = rootProject.file("local.properties")
 if (localPropertiesFile.exists()) {
@@ -15,7 +15,7 @@ if (localPropertiesFile.exists()) {
     }
 }
 
-val openWeatherMapAppId = localProperties["APP_ID"]?.toString() ?: ""
+val openWeatherMapAppId = localProperties["WEATHER_APP_ID"]?.toString() ?: ""
 
 android {
     namespace = "dev.vishalgaur.prefixerapp"
@@ -34,7 +34,7 @@ android {
         }
 
         buildConfigField("String", "BASE_URL", "\"https://api.openweathermap.org/\"")
-        buildConfigField("String", "APP_ID", "\"$openWeatherMapAppId\"")
+        buildConfigField("String", "WEATHER_APP_ID", "\"$openWeatherMapAppId\"")
     }
 
     buildTypes {
