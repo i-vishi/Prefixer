@@ -30,13 +30,8 @@ class Prefixer private constructor(context: Context, preferenceFileName: String)
         }
     }
 
-    /**
-     * Opens Activity
-     */
-    fun launchActivity(context: Context) {
-        val intent = Intent(context, AllPreferencesActivity::class.java)
-        // FLAG_ACTIVITY_NEW_TASK is needed because you're starting a new activity from a non-Activity context
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(intent)
+    fun getLaunchIntent(context: Context): Intent {
+        return Intent(context, AllPreferencesActivity::class.java)
+            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     }
 }

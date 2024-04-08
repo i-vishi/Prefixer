@@ -5,6 +5,8 @@
         <activity
             android:name=".ui.allPreferences.AllPreferencesActivity"
             android:exported="false"
+            android:launchMode="singleTask"
+            android:taskAffinity=".ui.allPreferences.AllPreferencesActivity"
             android:label="@string/title_activity_preferences_list"
             android:theme="@style/Theme.Prefixer" />
     </application>

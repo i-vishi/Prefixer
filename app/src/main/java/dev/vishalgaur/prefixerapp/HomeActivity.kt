@@ -72,7 +72,8 @@ class HomeActivity : ComponentActivity() {
     }
 
     private fun launchPrefixer() {
-        Prefixer.initialize(this, PreferencesManager.PREFS_NAME).launchActivity(this)
+        val launchIntent = Prefixer.initialize(this, PreferencesManager.PREFS_NAME).getLaunchIntent(this)
+        startActivity(launchIntent)
     }
 
     private fun saveYourLocation(location: String) {
