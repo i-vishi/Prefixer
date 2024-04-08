@@ -16,4 +16,5 @@ object ApiConstants {
 
     const val CITY_API_BASE_URL = BuildConfig.CITY_BASE_URL
     const val CITY_API_KEY = BuildConfig.CITY_API_KEY
+    const val HEADER_KEY_CITY_API = "X-Api-Key"
 }

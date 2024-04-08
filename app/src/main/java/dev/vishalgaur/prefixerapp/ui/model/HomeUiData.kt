@@ -8,4 +8,6 @@ data class HomeUiData(
     val forecastList: List<ForecastData>? = null,
     val error: String? = null,
     val isLoading: Boolean = true,
+    val isSearching: Boolean = false,
+    val searchError: String? = null,
 )

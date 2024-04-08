@@ -10,7 +10,9 @@ import kotlinx.coroutines.withContext
 
 class CitySearchRepoImpl : CitySearchRepo {
 
-    private val service: CitySearchService by lazy { RetrofitInstance.getInstance(false).create(CitySearchService::class.java) }
+    private val service: CitySearchService by lazy {
+        RetrofitInstance.getInstanceForCityApi().create(CitySearchService::class.java)
+    }
 
     override suspend fun searchACity(query: String): Result<List<CitySearchData>> {
         return withContext(Dispatchers.IO) {

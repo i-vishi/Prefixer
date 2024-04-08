@@ -37,25 +37,43 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.vishalgaur.prefixerapp.R
+import dev.vishalgaur.prefixerapp.core.ui.TextFieldState
+import dev.vishalgaur.prefixerapp.ui.home.components.SearchTextField
 import dev.vishalgaur.prefixerapp.ui.model.CityWeatherData
 import dev.vishalgaur.prefixerapp.ui.model.ForecastData
 import dev.vishalgaur.prefixerapp.ui.model.HomeUiData
+import dev.vishalgaur.prefixerapp.ui.theme.Grey100
 import dev.vishalgaur.prefixerapp.ui.theme.PrefixerAppTheme
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun HomeScreenUI(uiData: HomeUiData, onRetry: () -> Unit) {
+fun HomeScreenUI(
+    uiData: HomeUiData,
+    onRetry: () -> Unit,
+    onSearchCity: (String) -> Unit,
+) {
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
+
+    val focusRequester = remember { FocusRequester() }
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val searchCityState = remember { TextFieldState(initialValue = "") }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         contentWindowInsets = WindowInsets.safeContent,
@@ -91,13 +109,34 @@ fun HomeScreenUI(uiData: HomeUiData, onRetry: () -> Unit) {
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
+                SearchTextField(
+                    modifier = Modifier
+                        .focusRequester(focusRequester)
+                        .padding(start = 16.dp, end = 16.dp, top = 48.dp),
+                    textFieldState = searchCityState,
+                    placeholder = {
+                        Text(
+                            text = stringResource(R.string.search_a_city),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Grey100,
+                        )
+                    },
+                    maxCharacters = 50,
+                    infoText = if (uiData.isSearching) "Searching..." else uiData.searchError,
+                    imeAction = ImeAction.Done,
+                    onImeAction = {
+                        keyboardController?.hide()
+                        onSearchCity(searchCityState.text)
+                    },
+                )
+
                 Text(
                     text = stringResource(
                         id = R.string.temp_with_degree,
                         uiData.todayData?.currTemperature.toString(),
                     ),
                     modifier = Modifier
-                        .padding(top = 100.dp)
+                        .padding(top = 60.dp)
                         .wrapContentHeight(),
                     style = MaterialTheme.typography.headlineLarge,
                 )
@@ -225,6 +264,7 @@ private fun PreviewHomeScreenUI() {
                 ),
             ),
             onRetry = {},
+            onSearchCity = {},
         )
     }
 }

@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
 import dev.vishalgaur.prefixerapp.core.PreferencesManager
 import dev.vishalgaur.prefixerapp.repository.CitySearchRepoImpl
@@ -46,13 +47,29 @@ class HomeActivity : ComponentActivity() {
     @Composable
     private fun HomeScreenContent() {
         val homeUiData = viewModel.homeUiDataMLD.observeAsState()
+        val cityResponse = viewModel.citySearchMLD.observeAsState()
+
+        LaunchedEffect(key1 = cityResponse.value) {
+            cityResponse.value?.let {
+                viewModel.getWeatherData(it.name)
+                saveYourLocation(it.name)
+            }
+        }
 
         HomeScreenUI(
             uiData = homeUiData.value ?: HomeUiData(isLoading = true),
+            onSearchCity = { query ->
+                viewModel.searchCity(query)
+            },
             onRetry = {
                 viewModel.getWeatherData(savedLocation)
             },
         )
+    }
+
+    private fun saveYourLocation(location: String) {
+        PreferencesManager.getInstance(this).saveCurrentLocation(location)
+        savedLocation = location
     }
 
     override fun onResume() {

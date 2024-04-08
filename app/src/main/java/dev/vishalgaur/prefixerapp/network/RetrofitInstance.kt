@@ -12,6 +12,9 @@ object RetrofitInstance {
     @Volatile
     private lateinit var INSTANCE: Retrofit
 
+    @Volatile
+    private lateinit var INSTANCE_CITY: Retrofit
+
     private fun createInstance(
         baseUrl: String = ApiConstants.WEATHER_BASE_URL,
         authKey: String = ApiConstants.WEATHER_APP_ID,
@@ -38,12 +41,21 @@ object RetrofitInstance {
             .build()
     }
 
-    fun getInstance(forWeather: Boolean = true): Retrofit {
+    fun getInstance(): Retrofit {
         return synchronized(this) {
             if (!RetrofitInstance::INSTANCE.isInitialized) {
-                INSTANCE = if (forWeather) createInstance() else createInstanceForCityApi()
+                INSTANCE = createInstance()
             }
             INSTANCE
+        }
+    }
+
+    fun getInstanceForCityApi(): Retrofit {
+        return synchronized(this) {
+            if (!RetrofitInstance::INSTANCE_CITY.isInitialized) {
+                INSTANCE_CITY = createInstanceForCityApi()
+            }
+            INSTANCE_CITY
         }
     }
 
@@ -62,7 +74,7 @@ object RetrofitInstance {
         addInterceptor(
             Interceptor { chain ->
                 val request = chain.request()
-                val headers = request.headers.newBuilder().add("", authKey).build()
+                val headers = request.headers.newBuilder().add(ApiConstants.HEADER_KEY_CITY_API, authKey).build()
                 val builder = request.newBuilder().headers(headers)
                 return@Interceptor chain.proceed(builder.build())
             },

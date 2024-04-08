@@ -3,4 +3,5 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="temp_with_c">%1$s C</string>
     <string name="temp_with_degree">%1$s°</string>
+    <string name="search_a_city">Search a city</string>
 </resources>
