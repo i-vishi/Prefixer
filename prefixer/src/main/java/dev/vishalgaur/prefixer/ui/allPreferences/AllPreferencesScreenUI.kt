@@ -115,7 +115,7 @@ private fun PreviewAllPreferencesScreen() {
                 PreferencesPair("dsfd", "dsfwewreabdgh"),
                 PreferencesPair(
                     "dsfdfsgdd",
-                    "dsfg dlif ksepodr jfg eprdo ;fjgewg dlif ksepodr jfg eprdo ;fjgewg dlif ksepodr jfg eprdo ;fjgewwsfg dlif ksepodr jfg eprdo ;fjgewreabdgh"
+                    "dsfg dlif ksepodr jfg eprdo ;fjgewg dlif ksepodr jfg eprdo ;fjgewg dlif ksepodr jfg eprdo ;fjgewwsfg dlif ksepodr jfg eprdo ;fjgewreabdgh",
                 ),
             ),
         )

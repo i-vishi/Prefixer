@@ -151,7 +151,7 @@ fun HomeScreenUI(
                         },
                         onClick = {},
                     ),
-                appVersion = BuildConfig.VERSION_NAME
+                appVersion = BuildConfig.VERSION_NAME,
             )
         }
     }
