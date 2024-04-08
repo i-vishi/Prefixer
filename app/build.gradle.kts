@@ -16,6 +16,7 @@ if (localPropertiesFile.exists()) {
 }
 
 val openWeatherMapAppId = localProperties["WEATHER_APP_ID"]?.toString() ?: ""
+val cityApiKey = localProperties["CITY_API_KEY"]?.toString() ?: ""
 
 android {
     namespace = "dev.vishalgaur.prefixerapp"
@@ -35,6 +36,8 @@ android {
 
         buildConfigField("String", "WEATHER_BASE_URL", "\"https://api.openweathermap.org/\"")
         buildConfigField("String", "WEATHER_APP_ID", "\"$openWeatherMapAppId\"")
+        buildConfigField("String", "CITY_BASE_URL", "\"https://api.api-ninjas.com/\"")
+        buildConfigField("String", "CITY_API_KEY", "\"$cityApiKey\"")
     }
 
     buildTypes {
