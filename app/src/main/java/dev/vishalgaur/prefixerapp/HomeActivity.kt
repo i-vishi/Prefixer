@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import dev.vishalgaur.prefixerapp.core.PreferencesManager
+import dev.vishalgaur.prefixerapp.repository.CitySearchRepoImpl
 import dev.vishalgaur.prefixerapp.repository.WeatherRepoImpl
 import dev.vishalgaur.prefixerapp.ui.home.HomeScreenUI
 import dev.vishalgaur.prefixerapp.ui.model.HomeUiData
@@ -17,7 +18,12 @@ import dev.vishalgaur.prefixerapp.viewModel.HomeViewModel
 class HomeActivity : ComponentActivity() {
 
     private val viewModel: HomeViewModel by viewModels(
-        factoryProducer = { HomeViewModel.provideFactory(WeatherRepoImpl()) },
+        factoryProducer = {
+            HomeViewModel.provideFactory(
+                weatherRepo = WeatherRepoImpl(),
+                cityRepo = CitySearchRepoImpl(),
+            )
+        },
     )
     private lateinit var savedLocation: String
 

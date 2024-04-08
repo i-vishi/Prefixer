@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import dev.vishalgaur.prefixerapp.core.base.Result
 import dev.vishalgaur.prefixerapp.core.utils.DateUtils
+import dev.vishalgaur.prefixerapp.repository.CitySearchRepoImpl
 import dev.vishalgaur.prefixerapp.repository.WeatherRepoImpl
 import dev.vishalgaur.prefixerapp.ui.model.CityWeatherData
 import dev.vishalgaur.prefixerapp.ui.model.ForecastData
@@ -15,7 +16,10 @@ import dev.vishalgaur.prefixerapp.ui.model.HomeUiData
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
-class HomeViewModel(private val repo: WeatherRepoImpl) : ViewModel() {
+class HomeViewModel(
+    private val weatherRepo: WeatherRepoImpl,
+    private val cityRepo: CitySearchRepoImpl,
+) : ViewModel() {
 
     private var _homeUiDataMLD = MutableLiveData(HomeUiData())
     val homeUiDataMLD: LiveData<HomeUiData> get() = _homeUiDataMLD
@@ -26,8 +30,8 @@ class HomeViewModel(private val repo: WeatherRepoImpl) : ViewModel() {
             _homeUiDataMLD.value = HomeUiData(isLoading = true)
 
             try {
-                val cityWeatherResponse = repo.getCurrentWeatherDataByCityName(location)
-                val forecastResponse = repo.getCityWeatherForecast(location)
+                val cityWeatherResponse = weatherRepo.getCurrentWeatherDataByCityName(location)
+                val forecastResponse = weatherRepo.getCityWeatherForecast(location)
 
                 var cityWeatherData: CityWeatherData? = null
                 var forecastData = mutableListOf<ForecastData>()
@@ -94,11 +98,14 @@ class HomeViewModel(private val repo: WeatherRepoImpl) : ViewModel() {
         private const val TAG = "HomeViewModel"
         private const val CITY_NAME = "Bangalore"
 
-        fun provideFactory(repo: WeatherRepoImpl): ViewModelProvider.Factory =
+        fun provideFactory(
+            weatherRepo: WeatherRepoImpl,
+            cityRepo: CitySearchRepoImpl,
+        ): ViewModelProvider.Factory =
             object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return HomeViewModel(repo = repo) as T
+                    return HomeViewModel(weatherRepo = weatherRepo, cityRepo = cityRepo) as T
                 }
             }
     }
