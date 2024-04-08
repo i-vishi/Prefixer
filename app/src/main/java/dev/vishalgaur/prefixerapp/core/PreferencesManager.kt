@@ -17,7 +17,7 @@ class PreferencesManager private constructor(context: Context) {
     }
 
     companion object {
-        private const val PREFS_NAME = "PrefixerAppPreferences"
+        const val PREFS_NAME = "PrefixerAppPreferences"
 
         @Volatile
         private var instance: PreferencesManager? = null

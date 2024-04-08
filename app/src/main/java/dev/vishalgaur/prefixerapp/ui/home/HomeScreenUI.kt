@@ -9,9 +9,14 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -47,9 +52,11 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.vishalgaur.prefixerapp.R
@@ -62,12 +69,13 @@ import dev.vishalgaur.prefixerapp.ui.theme.Grey100
 import dev.vishalgaur.prefixerapp.ui.theme.PrefixerAppTheme
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreenUI(
     uiData: HomeUiData,
     onRetry: () -> Unit,
     onSearchCity: (String) -> Unit,
+    onAppVersionLongPress: () -> Unit,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
@@ -104,77 +112,133 @@ fun HomeScreenUI(
             SnackbarHost(hostState = snackbarHostState)
         },
     ) {
-        if (uiData.isLoading) {
-            HomeLoadingUI(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(it),
-            )
-        } else if (!uiData.error.isNullOrBlank()) {
-            setErrorOccurred(true)
-        } else {
-            Column(
-                modifier = Modifier
-                    .padding(it)
-                    .fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                SearchTextField(
+        Column(
+            modifier = Modifier
+                .padding(it)
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Bottom,
+        ) {
+            if (uiData.isLoading) {
+                HomeLoadingUI(
                     modifier = Modifier
-                        .focusRequester(focusRequester)
-                        .padding(start = 16.dp, end = 16.dp, top = 32.dp),
-                    textFieldState = searchCityState,
-                    placeholder = {
-                        Text(
-                            text = stringResource(R.string.search_a_city),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Grey100,
-                        )
-                    },
-                    maxCharacters = 50,
-                    infoText = if (uiData.isSearching) "Searching..." else uiData.searchError,
-                    imeAction = ImeAction.Done,
-                    onImeAction = {
-                        keyboardController?.hide()
-                        onSearchCity(searchCityState.text)
-                    },
+                        .padding(40.dp)
+                        .fillMaxWidth()
+                        .weight(1f),
                 )
+            } else if (!uiData.error.isNullOrBlank()) {
+                setErrorOccurred(true)
+            } else {
+                HomeSuccessUI(
+                    focusRequester,
+                    searchCityState,
+                    uiData,
+                    keyboardController,
+                    onSearchCity,
+                )
+            }
 
-                Text(
-                    text = stringResource(
-                        id = R.string.temp_with_degree,
-                        uiData.todayData?.currTemperature.toString(),
+            // App Version Text
+            AppVersionTextView(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .combinedClickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        onLongClick = {
+                            onAppVersionLongPress()
+                        },
+                        onClick = {},
                     ),
-                    modifier = Modifier
-                        .padding(top = 60.dp)
-                        .wrapContentHeight(),
-                    style = MaterialTheme.typography.headlineLarge,
-                )
+                appVersion = "0.0.1.1",
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+private fun ColumnScope.HomeSuccessUI(
+    focusRequester: FocusRequester,
+    searchCityState: TextFieldState,
+    uiData: HomeUiData,
+    keyboardController: SoftwareKeyboardController?,
+    onSearchCity: (String) -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .weight(1f),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        SearchTextField(
+            modifier = Modifier
+                .focusRequester(focusRequester)
+                .padding(start = 16.dp, end = 16.dp, top = 32.dp),
+            textFieldState = searchCityState,
+            placeholder = {
                 Text(
-                    text = uiData.todayData?.cityName ?: "",
-                    modifier = Modifier.wrapContentHeight(),
-                    style = MaterialTheme.typography.titleLarge,
+                    text = stringResource(R.string.search_a_city),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Grey100,
                 )
-                Spacer(modifier = Modifier.weight(1f))
-                uiData.forecastList?.let { forecasts ->
-                    AnimatedVisibility(
-                        visible = forecasts.isNotEmpty(),
-                        enter = slideInVertically(
-                            animationSpec = spring(stiffness = Spring.StiffnessLow),
-                            initialOffsetY = { offY ->
-                                offY * 2 / 3
-                            },
-                        ),
-                    ) {
-                        WeatherForecastView(
-                            modifier = Modifier,
-                            forecastList = forecasts,
-                        )
-                    }
-                }
+            },
+            maxCharacters = 50,
+            infoText = if (uiData.isSearching) "Searching..." else uiData.searchError,
+            imeAction = ImeAction.Done,
+            onImeAction = {
+                keyboardController?.hide()
+                onSearchCity(searchCityState.text)
+            },
+        )
+
+        Text(
+            text = stringResource(
+                id = R.string.temp_with_degree,
+                uiData.todayData?.currTemperature.toString(),
+            ),
+            modifier = Modifier
+                .padding(top = 60.dp)
+                .wrapContentHeight(),
+            style = MaterialTheme.typography.headlineLarge,
+        )
+        Text(
+            text = uiData.todayData?.cityName ?: "",
+            modifier = Modifier.wrapContentHeight(),
+            style = MaterialTheme.typography.titleLarge,
+        )
+        Spacer(modifier = Modifier.weight(1f))
+        uiData.forecastList?.let { forecasts ->
+            AnimatedVisibility(
+                visible = forecasts.isNotEmpty(),
+                enter = slideInVertically(
+                    animationSpec = spring(stiffness = Spring.StiffnessLow),
+                    initialOffsetY = { offY ->
+                        offY * 2 / 3
+                    },
+                ),
+            ) {
+                WeatherForecastView(
+                    modifier = Modifier,
+                    forecastList = forecasts,
+                )
             }
         }
     }
+}
+
+@Composable
+private fun AppVersionTextView(modifier: Modifier, appVersion: String) {
+    Text(
+        text = "App Version: $appVersion",
+        color = Grey100,
+        textAlign = TextAlign.Center,
+        modifier = modifier
+            .fillMaxWidth()
+            .background(color = Color.White)
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        style = MaterialTheme.typography.bodySmall,
+    )
 }
 
 @Composable
@@ -275,6 +339,7 @@ private fun PreviewHomeScreenUI() {
             ),
             onRetry = {},
             onSearchCity = {},
+            onAppVersionLongPress = {},
         )
     }
 }
