@@ -59,6 +59,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.vishalgaur.prefixerapp.BuildConfig
 import dev.vishalgaur.prefixerapp.R
 import dev.vishalgaur.prefixerapp.core.ui.TextFieldState
 import dev.vishalgaur.prefixerapp.ui.home.components.SearchTextField
@@ -150,7 +151,7 @@ fun HomeScreenUI(
                         },
                         onClick = {},
                     ),
-                appVersion = "0.0.1.1",
+                appVersion = BuildConfig.VERSION_NAME
             )
         }
     }
