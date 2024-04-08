@@ -33,7 +33,7 @@ android {
             useSupportLibrary = true
         }
 
-        buildConfigField("String", "BASE_URL", "\"https://api.openweathermap.org/\"")
+        buildConfigField("String", "WEATHER_BASE_URL", "\"https://api.openweathermap.org/\"")
         buildConfigField("String", "WEATHER_APP_ID", "\"$openWeatherMapAppId\"")
     }
 
