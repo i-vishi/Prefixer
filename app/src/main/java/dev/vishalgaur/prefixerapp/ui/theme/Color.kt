@@ -2,6 +2,9 @@ package dev.vishalgaur.prefixerapp.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+val Grey10 = Color(0xFFF5F6F7)
+val Grey100 = Color(0xFF2A2A2A)
+val AquaBlue = Color(0xFF556799)
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)
 val Pink80 = Color(0xFFEFB8C8)
