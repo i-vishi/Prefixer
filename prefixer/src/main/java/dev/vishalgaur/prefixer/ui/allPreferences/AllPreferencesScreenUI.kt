@@ -25,11 +25,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.vishalgaur.prefixer.ui.models.PreferencesPair
 import dev.vishalgaur.prefixer.ui.theme.PrefixerTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun AllPreferencesScreen(prefsName: String, prefsList: List<Pair<String, String>>) {
+internal fun AllPreferencesScreen(prefsName: String, prefsList: List<PreferencesPair>) {
     val listState = rememberLazyListState()
 
     Scaffold(
@@ -60,15 +61,15 @@ internal fun AllPreferencesScreen(prefsName: String, prefsList: List<Pair<String
                     prefsName = prefsName,
                 )
             }
-            prefsList.forEachIndexed { index, pair ->
-                item(key = pair.first) {
+            prefsList.forEachIndexed { index, prefItem ->
+                item(key = prefItem.key) {
                     PreferencesPairItemView(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable { }
                             .padding(vertical = 8.dp, horizontal = 16.dp),
-                        key = pair.first,
-                        value = pair.second,
+                        key = prefItem.key,
+                        value = prefItem.value,
                     )
                     Divider()
                 }
@@ -107,9 +108,9 @@ private fun PreviewAllPreferencesScreen() {
         AllPreferencesScreen(
             prefsName = "app_prefs",
             prefsList = listOf(
-                "dsf" to "dsfdgh",
-                "dsfd" to "dsfwewreabdgh",
-                "dsfdfsgdd" to "dsfg dlif ksepodr jfg eprdo ;fjgewg dlif ksepodr jfg eprdo ;fjgewg dlif ksepodr jfg eprdo ;fjgewwsfg dlif ksepodr jfg eprdo ;fjgewreabdgh",
+                PreferencesPair("dsf", "dsfdgh"),
+                PreferencesPair("dsfd", "dsfwewreabdgh"),
+                PreferencesPair("dsfdfsgdd", "dsfg dlif ksepodr jfg eprdo ;fjgewg dlif ksepodr jfg eprdo ;fjgewg dlif ksepodr jfg eprdo ;fjgewwsfg dlif ksepodr jfg eprdo ;fjgewreabdgh"),
             ),
         )
     }

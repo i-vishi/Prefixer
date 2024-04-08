@@ -27,7 +27,7 @@ import dev.vishalgaur.prefixer.ui.theme.PrefixerTheme
 import dev.vishalgaur.prefixer.ui.theme.StringValueColor
 
 @Composable
-internal fun PreferencesPairItemView(modifier: Modifier, key: String, value: String) {
+internal fun PreferencesPairItemView(modifier: Modifier, key: String, value: Any?) {
     Row(
         modifier = modifier.wrapContentHeight(),
         verticalAlignment = Alignment.CenterVertically,
@@ -43,7 +43,7 @@ internal fun PreferencesPairItemView(modifier: Modifier, key: String, value: Str
             style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
         )
         Text(
-            text = value,
+            text = "$value", // TODO
             style = MaterialTheme.typography.bodyMedium,
             color = StringValueColor,
             maxLines = 3,
