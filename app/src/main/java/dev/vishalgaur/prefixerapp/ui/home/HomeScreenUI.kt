@@ -112,7 +112,7 @@ fun HomeScreenUI(
                 SearchTextField(
                     modifier = Modifier
                         .focusRequester(focusRequester)
-                        .padding(start = 16.dp, end = 16.dp, top = 48.dp),
+                        .padding(start = 16.dp, end = 16.dp, top = 32.dp),
                     textFieldState = searchCityState,
                     placeholder = {
                         Text(
