@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Prefixer App</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="temp_with_c">%1$s C</string>
+    <string name="temp_with_degree">%1$s°</string>
 </resources>
