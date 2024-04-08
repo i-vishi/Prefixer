@@ -93,6 +93,9 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.gsonConvertor)
 
+    // add prefixer dependency
+    implementation(project(":prefixer"))
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

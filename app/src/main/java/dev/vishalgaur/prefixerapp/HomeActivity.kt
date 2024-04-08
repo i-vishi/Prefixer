@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
+import dev.vishalgaur.prefixer.Prefixer
 import dev.vishalgaur.prefixerapp.core.PreferencesManager
 import dev.vishalgaur.prefixerapp.repository.CitySearchRepoImpl
 import dev.vishalgaur.prefixerapp.repository.WeatherRepoImpl
@@ -64,7 +65,14 @@ class HomeActivity : ComponentActivity() {
             onRetry = {
                 viewModel.getWeatherData(savedLocation)
             },
+            onAppVersionLongPress = {
+                launchPrefixer()
+            },
         )
+    }
+
+    private fun launchPrefixer() {
+        Prefixer.initialize(this, PreferencesManager.PREFS_NAME).launchActivity(this)
     }
 
     private fun saveYourLocation(location: String) {
