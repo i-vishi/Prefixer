@@ -4,14 +4,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.livedata.observeAsState
+import dev.vishalgaur.prefixerapp.repository.WeatherRepoImpl
+import dev.vishalgaur.prefixerapp.ui.home.HomeScreenUI
+import dev.vishalgaur.prefixerapp.ui.model.HomeUiData
 import dev.vishalgaur.prefixerapp.ui.theme.PrefixerAppTheme
+import dev.vishalgaur.prefixerapp.viewModel.HomeViewModel
 
 class HomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,29 +19,24 @@ class HomeActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PrefixerAppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding),
-                    )
-                }
+                HomeScreenContent()
             }
         }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier,
+    private val viewModel: HomeViewModel by viewModels(
+        factoryProducer = { HomeViewModel.provideFactory(WeatherRepoImpl()) },
     )
-}
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    PrefixerAppTheme {
-        Greeting("Android")
+    @Composable
+    private fun HomeScreenContent() {
+        val homeUiData = viewModel.homeUiDataMLD.observeAsState()
+
+        HomeScreenUI(
+            uiData = homeUiData.value ?: HomeUiData(isLoading = true),
+            onRetry = {
+                viewModel.getWeatherData()
+            },
+        )
     }
 }

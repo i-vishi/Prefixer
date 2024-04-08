@@ -80,6 +80,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.compose.runtime.livedata)
 
     // retrofit2 and okHttp3
     implementation(libs.okHttp3)
