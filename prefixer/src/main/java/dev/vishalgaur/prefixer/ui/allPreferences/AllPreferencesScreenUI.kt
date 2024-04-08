@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
@@ -41,6 +43,7 @@ internal fun AllPreferencesScreen(prefsName: String, prefsList: List<Preferences
                     .wrapContentHeight()
                     .fillMaxWidth(),
             ) {
+                Spacer(modifier = Modifier.height(50.dp))
                 AllPreferencesTopAppBar(modifier = Modifier.fillMaxWidth())
                 Divider(modifier = Modifier.shadow(4.dp))
             }
@@ -71,7 +74,7 @@ internal fun AllPreferencesScreen(prefsName: String, prefsList: List<Preferences
                         key = prefItem.key,
                         value = prefItem.value,
                     )
-                    Divider()
+                    Divider(modifier = Modifier.padding(horizontal = 16.dp))
                 }
             }
         }
@@ -110,7 +113,10 @@ private fun PreviewAllPreferencesScreen() {
             prefsList = listOf(
                 PreferencesPair("dsf", "dsfdgh"),
                 PreferencesPair("dsfd", "dsfwewreabdgh"),
-                PreferencesPair("dsfdfsgdd", "dsfg dlif ksepodr jfg eprdo ;fjgewg dlif ksepodr jfg eprdo ;fjgewg dlif ksepodr jfg eprdo ;fjgewwsfg dlif ksepodr jfg eprdo ;fjgewreabdgh"),
+                PreferencesPair(
+                    "dsfdfsgdd",
+                    "dsfg dlif ksepodr jfg eprdo ;fjgewg dlif ksepodr jfg eprdo ;fjgewg dlif ksepodr jfg eprdo ;fjgewwsfg dlif ksepodr jfg eprdo ;fjgewreabdgh"
+                ),
             ),
         )
     }
