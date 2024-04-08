@@ -12,7 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
-class WeatherRepoImpl() : WeatherRepo {
+class WeatherRepoImpl : WeatherRepo {
 
     private val service: WeatherService by lazy { RetrofitInstance.getInstance().create(WeatherService::class.java) }
 

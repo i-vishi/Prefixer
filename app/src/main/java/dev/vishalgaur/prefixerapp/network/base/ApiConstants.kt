@@ -13,4 +13,7 @@ object ApiConstants {
     const val WEATHER_BASE_URL = BuildConfig.WEATHER_BASE_URL
     const val WEATHER_APP_ID = BuildConfig.WEATHER_APP_ID
     const val QUERY_APP_ID = "APPID"
+
+    const val CITY_API_BASE_URL = BuildConfig.CITY_BASE_URL
+    const val CITY_API_KEY = BuildConfig.CITY_API_KEY
 }
