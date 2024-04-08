@@ -32,8 +32,10 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -73,6 +75,27 @@ fun HomeScreenUI(
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
     val searchCityState = remember { TextFieldState(initialValue = "") }
+    val (errorOccurred, setErrorOccurred) = remember { mutableStateOf(false) }
+
+    LaunchedEffect(key1 = errorOccurred) {
+        if (errorOccurred && !uiData.error.isNullOrBlank()) {
+            coroutineScope.launch {
+                val result = snackbarHostState.showSnackbar(
+                    message = uiData.error,
+                    actionLabel = "Retry",
+                    duration = SnackbarDuration.Long,
+                )
+
+                when (result) {
+                    SnackbarResult.Dismissed -> {}
+                    SnackbarResult.ActionPerformed -> {
+                        onRetry()
+                    }
+                }
+                setErrorOccurred(false)
+            }
+        }
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -88,20 +111,7 @@ fun HomeScreenUI(
                     .padding(it),
             )
         } else if (!uiData.error.isNullOrBlank()) {
-            coroutineScope.launch {
-                val result = snackbarHostState.showSnackbar(
-                    message = uiData.error,
-                    actionLabel = "Retry",
-                    duration = SnackbarDuration.Long,
-                )
-
-                when (result) {
-                    SnackbarResult.Dismissed -> {}
-                    SnackbarResult.ActionPerformed -> {
-                        onRetry()
-                    }
-                }
-            }
+            setErrorOccurred(true)
         } else {
             Column(
                 modifier = Modifier
