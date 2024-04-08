@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <application>
+        <activity
+            android:name=".ui.allPreferences.AllPreferencesActivity"
+            android:exported="false"
+            android:label="@string/title_activity_preferences_list"
+            android:theme="@style/Theme.Prefixer" />
+    </application>
+
 </manifest>
