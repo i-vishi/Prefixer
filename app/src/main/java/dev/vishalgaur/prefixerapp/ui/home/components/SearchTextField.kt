@@ -8,6 +8,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -18,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import dev.vishalgaur.prefixerapp.R
 import dev.vishalgaur.prefixerapp.core.ui.TextFieldState
 
@@ -72,16 +74,17 @@ fun SearchTextField(
                     )
                 }
             },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color.Blue,
+            ),
         )
         if (!infoText.isNullOrBlank()) {
             Text(
                 modifier = Modifier.padding(start = 16.dp, top = 2.dp),
                 text = infoText,
-                style = MaterialTheme.typography.displaySmall,
+                style = MaterialTheme.typography.displaySmall.copy(fontSize = 13.sp),
                 color = Color.Red,
             )
         }
     }
-
-//    textFieldState.getError()?.let { error -> TextFieldError(textError = error) }
 }
