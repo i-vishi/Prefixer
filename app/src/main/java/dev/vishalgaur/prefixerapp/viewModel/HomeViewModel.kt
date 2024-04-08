@@ -86,6 +86,8 @@ class HomeViewModel(
                         forecastList = forecastData,
                         isLoading = false,
                         error = null,
+                        searchError = null,
+                        isSearching = false,
                     )
                 } else {
                     _homeUiDataMLD.value =
