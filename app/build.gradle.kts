@@ -93,6 +93,7 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.gsonConvertor)
 
+    implementation(project(":core"))
     // add prefixer dependency
     implementation(project(":prefixer"))
 
