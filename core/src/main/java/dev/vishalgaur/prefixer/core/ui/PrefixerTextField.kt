@@ -38,6 +38,8 @@ fun PrefixerTextField(
     imeAction: ImeAction = ImeAction.Next,
     onImeAction: () -> Unit = {},
     textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
+    maxLines: Int = 1,
+    minLines: Int = 1,
 ) {
     Column(
         modifier = modifier
@@ -82,6 +84,8 @@ fun PrefixerTextField(
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color.Blue,
             ),
+            maxLines = maxLines,
+            minLines = minLines,
         )
         if (!infoText.isNullOrBlank()) {
             Text(
