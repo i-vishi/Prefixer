@@ -22,3 +22,4 @@ dependencyResolutionManagement {
 rootProject.name = "Prefixer App"
 include(":app")
 include(":prefixer")
+include(":core")
