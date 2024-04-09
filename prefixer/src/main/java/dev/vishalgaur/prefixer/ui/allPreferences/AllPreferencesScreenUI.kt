@@ -2,7 +2,7 @@ package dev.vishalgaur.prefixer.ui.allPreferences
 
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,10 +16,17 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -28,12 +35,20 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.vishalgaur.prefixer.ui.models.PreferencesPair
+import dev.vishalgaur.prefixer.ui.prefEdit.SharedPreferencesEditBottomSheet
 import dev.vishalgaur.prefixer.ui.theme.PrefixerTheme
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 internal fun AllPreferencesScreen(prefsName: String, prefsList: List<PreferencesPair>) {
     val listState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
+    val sheetState = rememberModalBottomSheetState()
+    var showBottomSheet by remember { mutableStateOf(false) }
+    var (selectedPref, setSelectedPref) = remember {
+        mutableStateOf<PreferencesPair?>(null)
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -49,6 +64,30 @@ internal fun AllPreferencesScreen(prefsName: String, prefsList: List<Preferences
             }
         },
     ) {
+        if (showBottomSheet && selectedPref != null) {
+            SharedPreferencesEditBottomSheet(
+                modifier = Modifier.fillMaxWidth(),
+                sheetState = sheetState,
+                key = selectedPref.key,
+                value = selectedPref.value.toString(),
+                onSubmit = {
+                    coroutineScope.launch {
+                        sheetState.hide()
+                    }.invokeOnCompletion {
+                        setSelectedPref(null)
+                        showBottomSheet = false
+                    }
+                },
+                onCancel = {
+                    coroutineScope.launch {
+                        sheetState.hide()
+                    }.invokeOnCompletion {
+                        setSelectedPref(null)
+                        showBottomSheet = false
+                    }
+                },
+            )
+        }
         LazyColumn(
             modifier = Modifier
                 .padding(it)
@@ -69,7 +108,13 @@ internal fun AllPreferencesScreen(prefsName: String, prefsList: List<Preferences
                     PreferencesPairItemView(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable { }
+                            .combinedClickable(
+                                onLongClick = {
+                                    setSelectedPref(prefItem)
+                                    showBottomSheet = true
+                                },
+                                onClick = {},
+                            )
                             .padding(vertical = 8.dp, horizontal = 16.dp),
                         key = prefItem.key,
                         value = prefItem.value,
