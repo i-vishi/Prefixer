@@ -122,20 +122,8 @@ fun SharedPreferencesEditBottomSheet(
                 Text(text = "Save")
             }
         }
+        Spacer(modifier = Modifier.height(24.dp))
     }
-//    Surface(
-//        modifier = modifier,
-//        shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
-//        shadowElevation = 4.dp
-//    ) {
-//        Column(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .wrapContentHeight()
-//                .padding(vertical = 20.dp, horizontal = 16.dp)
-//        ) {
-//        }
-//    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
