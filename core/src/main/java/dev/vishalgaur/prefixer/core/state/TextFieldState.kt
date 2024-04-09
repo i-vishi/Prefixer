@@ -1,4 +1,4 @@
-package dev.vishalgaur.prefixerapp.core.ui
+package dev.vishalgaur.prefixer.core.state
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

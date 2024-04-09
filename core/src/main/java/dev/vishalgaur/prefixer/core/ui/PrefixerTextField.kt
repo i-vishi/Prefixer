@@ -1,5 +1,6 @@
-package dev.vishalgaur.prefixerapp.ui.home.components
+package dev.vishalgaur.prefixer.core.ui
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,23 +19,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import dev.vishalgaur.prefixerapp.R
-import dev.vishalgaur.prefixerapp.core.ui.TextFieldState
+import dev.vishalgaur.prefixer.core.state.TextFieldState
 
 @Composable
-fun SearchTextField(
+fun PrefixerTextField(
     modifier: Modifier,
     textFieldState: TextFieldState = remember { TextFieldState() },
     placeholder: @Composable () -> Unit,
     infoText: String? = null,
     maxCharacters: Int? = null,
+    @DrawableRes trailingErrorIconRes: Int? = null,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Next,
     onImeAction: () -> Unit = {},
+    textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
 ) {
     Column(
         modifier = modifier
@@ -56,7 +59,7 @@ fun SearchTextField(
                         textFieldState.enableShowErrors()
                     }
                 },
-            textStyle = MaterialTheme.typography.bodyLarge,
+            textStyle = textStyle,
             isError = textFieldState.showErrors(),
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = imeAction,
@@ -68,9 +71,9 @@ fun SearchTextField(
                 },
             ),
             trailingIcon = {
-                if (textFieldState.getError() != null) {
+                if (textFieldState.getError() != null && trailingErrorIconRes != null) {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_error_outline_24),
+                        painter = painterResource(id = trailingErrorIconRes),
                         contentDescription = "Error Icon",
                         tint = Color.Red,
                     )

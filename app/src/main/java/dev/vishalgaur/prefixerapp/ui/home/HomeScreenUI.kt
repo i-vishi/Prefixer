@@ -59,10 +59,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.vishalgaur.prefixer.core.state.TextFieldState
+import dev.vishalgaur.prefixer.core.ui.PrefixerTextField
 import dev.vishalgaur.prefixerapp.BuildConfig
 import dev.vishalgaur.prefixerapp.R
-import dev.vishalgaur.prefixerapp.core.ui.TextFieldState
-import dev.vishalgaur.prefixerapp.ui.home.components.SearchTextField
 import dev.vishalgaur.prefixerapp.ui.model.CityWeatherData
 import dev.vishalgaur.prefixerapp.ui.model.ForecastData
 import dev.vishalgaur.prefixerapp.ui.model.HomeUiData
@@ -172,7 +172,7 @@ private fun ColumnScope.HomeSuccessUI(
             .weight(1f),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        SearchTextField(
+        PrefixerTextField(
             modifier = Modifier
                 .focusRequester(focusRequester)
                 .padding(start = 16.dp, end = 16.dp, top = 32.dp),
@@ -185,6 +185,8 @@ private fun ColumnScope.HomeSuccessUI(
                 )
             },
             maxCharacters = 50,
+            textStyle = MaterialTheme.typography.bodyLarge,
+            trailingErrorIconRes = R.drawable.ic_error_outline_24,
             infoText = if (uiData.isSearching) "Searching..." else uiData.searchError,
             imeAction = ImeAction.Done,
             onImeAction = {
