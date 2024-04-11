@@ -42,7 +42,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
-internal fun AllPreferencesScreen(prefsName: String, prefsList: List<PreferencesPair>) {
+internal fun AllPreferencesScreen(prefsName: String, prefsList: List<PreferencesPair>, onUpdatePref: (PreferencesPair) -> Unit) {
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState()
@@ -164,6 +164,7 @@ private fun PreviewAllPreferencesScreen() {
                     PrefValueType.StringType("dsfg dlif ksepodr jfg eprdo ;fjgewg dlif ksepodr jfg eprdo ;fjgewg dlif ksepodr jfg eprdo ;fjgewwsfg dlif ksepodr jfg eprdo ;fjgewreabdgh"),
                 ),
             ),
+            onUpdatePref = {},
         )
     }
 }

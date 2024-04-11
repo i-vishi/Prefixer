@@ -21,6 +21,9 @@ class AllPreferencesActivity : ComponentActivity() {
                 AllPreferencesScreen(
                     prefsName = spManager.preferenceFileName,
                     prefsList = allPrefs.getPrefsList(),
+                    onUpdatePref = {
+
+                    },
                 )
             }
         }

@@ -52,7 +52,7 @@ fun SharedPreferencesEditBottomSheet(
     sheetState: SheetState = rememberModalBottomSheetState(),
     key: String,
     prefValue: PrefValueType,
-    onSubmit: (value: String) -> Unit,
+    onSubmit: (value: PrefValueType) -> Unit,
     onCancel: () -> Unit,
 ) {
     val focusRequester = remember { FocusRequester() }
@@ -148,7 +148,17 @@ fun SharedPreferencesEditBottomSheet(
                 Text(text = "Cancel")
             }
 
-            Button(modifier = Modifier.weight(1f), onClick = { onSubmit("") }) {
+            Button(
+                modifier = Modifier.weight(1f),
+                onClick = {
+                    val value = when (prefValue) {
+                        is PrefValueType.BooleanType -> PrefValueType.BooleanType(booleanValueState.value)
+                        is PrefValueType.IntType -> PrefValueType.IntType(valueFieldState.text.toInt())
+                        is PrefValueType.StringType -> PrefValueType.StringType(valueFieldState.text)
+                    }
+                    onSubmit(value)
+                },
+            ) {
                 Text(text = "Save")
             }
         }
