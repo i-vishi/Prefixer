@@ -47,7 +47,7 @@ import dev.vishalgaur.prefixer.ui.theme.StringValueColor
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun SharedPreferencesEditBottomSheet(
+internal fun SharedPreferencesEditBottomSheet(
     modifier: Modifier,
     sheetState: SheetState = rememberModalBottomSheetState(),
     key: String,
