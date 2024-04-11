@@ -4,43 +4,35 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import dev.vishalgaur.prefixer.Prefixer
-import dev.vishalgaur.prefixer.base.PrefValueType
 import dev.vishalgaur.prefixer.base.SharedPreferencesManager
-import dev.vishalgaur.prefixer.ui.models.PreferencesPair
+import dev.vishalgaur.prefixer.domain.viewModel.AllPreferencesViewModel
 import dev.vishalgaur.prefixer.ui.theme.PrefixerTheme
 
 internal class AllPreferencesActivity : ComponentActivity() {
+
+    private val viewModel: AllPreferencesViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         val spManager: SharedPreferencesManager = Prefixer.INSTANCE.sharedPreferencesManager
-        val allPrefs = spManager.getAllPreferences()
+        viewModel.getAllPreferences(spManager)
         setContent {
             PrefixerTheme {
+                val allPrefs by viewModel.allPreferencesFlow.collectAsState()
+
                 AllPreferencesScreen(
                     prefsName = spManager.preferenceFileName,
-                    prefsList = allPrefs.getPrefsList(),
+                    prefsList = allPrefs,
                     onUpdatePref = {
-                        spManager.updateSharedPreference(it.key to it.value)
+                        viewModel.updateSharedPreference(spManager, it)
                     },
                 )
             }
         }
-    }
-
-    private fun Map<String, *>.getPrefsList(): List<PreferencesPair> {
-        val prefList = mutableListOf<PreferencesPair>()
-        this.forEach { (t, u) ->
-            val value: PrefValueType = when (u) {
-                is Number -> PrefValueType.LongType(u.toLong())
-                is Boolean -> PrefValueType.BooleanType(u)
-                else -> PrefValueType.StringType(u?.toString())
-            }
-            prefList.add(
-                PreferencesPair(t, value),
-            )
-        }
-        return prefList
     }
 }
