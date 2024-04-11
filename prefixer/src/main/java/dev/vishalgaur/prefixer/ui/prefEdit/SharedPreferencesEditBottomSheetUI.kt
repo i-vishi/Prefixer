@@ -40,7 +40,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import dev.vishalgaur.prefixer.base.PrefValueType
-import dev.vishalgaur.prefixer.core.state.TextFieldState
+import dev.vishalgaur.prefixer.core.state.PrefixerTextFieldState
 import dev.vishalgaur.prefixer.core.ui.PrefixerTextField
 import dev.vishalgaur.prefixer.ui.theme.PrefixerTheme
 import dev.vishalgaur.prefixer.ui.theme.StringValueColor
@@ -57,7 +57,7 @@ fun SharedPreferencesEditBottomSheet(
 ) {
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
-    val valueFieldState = remember { TextFieldState(initialValue = prefValue.value.toString()) }
+    val valueFieldState = remember { PrefixerTextFieldState(initialValue = prefValue.value.toString()) }
     val booleanValueState = remember {
         mutableStateOf(
             if (prefValue is PrefValueType.BooleanType) prefValue.value else false,
@@ -174,7 +174,7 @@ fun SharedPreferencesEditBottomSheet(
 private fun RowScope.PrefValueEditView(
     modifier: Modifier,
     prefValue: PrefValueType,
-    valueFieldState: TextFieldState,
+    valueFieldState: PrefixerTextFieldState,
     focusRequester: FocusRequester,
     keyboardController: SoftwareKeyboardController?,
     onEditBoolean: (Boolean) -> Unit,

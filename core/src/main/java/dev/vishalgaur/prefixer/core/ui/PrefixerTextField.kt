@@ -24,12 +24,12 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import dev.vishalgaur.prefixer.core.state.TextFieldState
+import dev.vishalgaur.prefixer.core.state.PrefixerTextFieldState
 
 @Composable
 fun PrefixerTextField(
     modifier: Modifier,
-    textFieldState: TextFieldState = remember { TextFieldState() },
+    textFieldState: PrefixerTextFieldState = remember { PrefixerTextFieldState() },
     placeholder: @Composable () -> Unit,
     infoText: String? = null,
     maxCharacters: Int? = null,

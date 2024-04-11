@@ -59,7 +59,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.vishalgaur.prefixer.core.state.TextFieldState
+import dev.vishalgaur.prefixer.core.state.PrefixerTextFieldState
 import dev.vishalgaur.prefixer.core.ui.PrefixerTextField
 import dev.vishalgaur.prefixerapp.BuildConfig
 import dev.vishalgaur.prefixerapp.R
@@ -83,7 +83,7 @@ fun HomeScreenUI(
 
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
-    val searchCityState = remember { TextFieldState(initialValue = "") }
+    val searchCityState = remember { PrefixerTextFieldState(initialValue = "") }
     val (errorOccurred, setErrorOccurred) = remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = errorOccurred) {
@@ -161,7 +161,7 @@ fun HomeScreenUI(
 @Composable
 private fun ColumnScope.HomeSuccessUI(
     focusRequester: FocusRequester,
-    searchCityState: TextFieldState,
+    searchCityState: PrefixerTextFieldState,
     uiData: HomeUiData,
     keyboardController: SoftwareKeyboardController?,
     onSearchCity: (String) -> Unit,

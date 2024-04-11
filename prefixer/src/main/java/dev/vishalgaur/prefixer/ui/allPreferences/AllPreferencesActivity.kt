@@ -10,7 +10,7 @@ import dev.vishalgaur.prefixer.base.SharedPreferencesManager
 import dev.vishalgaur.prefixer.ui.models.PreferencesPair
 import dev.vishalgaur.prefixer.ui.theme.PrefixerTheme
 
-class AllPreferencesActivity : ComponentActivity() {
+internal class AllPreferencesActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
