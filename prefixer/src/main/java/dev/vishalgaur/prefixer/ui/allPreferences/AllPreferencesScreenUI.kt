@@ -34,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.vishalgaur.prefixer.base.PrefValueType
 import dev.vishalgaur.prefixer.ui.models.PreferencesPair
 import dev.vishalgaur.prefixer.ui.prefEdit.SharedPreferencesEditBottomSheet
 import dev.vishalgaur.prefixer.ui.theme.PrefixerTheme
@@ -46,7 +47,7 @@ internal fun AllPreferencesScreen(prefsName: String, prefsList: List<Preferences
     val coroutineScope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState()
     var showBottomSheet by remember { mutableStateOf(false) }
-    var (selectedPref, setSelectedPref) = remember {
+    val (selectedPref, setSelectedPref) = remember {
         mutableStateOf<PreferencesPair?>(null)
     }
 
@@ -69,7 +70,7 @@ internal fun AllPreferencesScreen(prefsName: String, prefsList: List<Preferences
                 modifier = Modifier.fillMaxWidth(),
                 sheetState = sheetState,
                 key = selectedPref.key,
-                value = selectedPref.value.toString(),
+                prefValue = selectedPref.value,
                 onSubmit = {
                     coroutineScope.launch {
                         sheetState.hide()
@@ -117,7 +118,7 @@ internal fun AllPreferencesScreen(prefsName: String, prefsList: List<Preferences
                             )
                             .padding(vertical = 8.dp, horizontal = 16.dp),
                         key = prefItem.key,
-                        value = prefItem.value,
+                        prefValue = prefItem.value,
                     )
                     Divider(modifier = Modifier.padding(horizontal = 16.dp))
                 }
@@ -156,11 +157,11 @@ private fun PreviewAllPreferencesScreen() {
         AllPreferencesScreen(
             prefsName = "app_prefs",
             prefsList = listOf(
-                PreferencesPair("dsf", "dsfdgh"),
-                PreferencesPair("dsfd", "dsfwewreabdgh"),
+                PreferencesPair("dsf", PrefValueType.IntType(4354)),
+                PreferencesPair("dsfd", PrefValueType.BooleanType(false)),
                 PreferencesPair(
                     "dsfdfsgdd",
-                    "dsfg dlif ksepodr jfg eprdo ;fjgewg dlif ksepodr jfg eprdo ;fjgewg dlif ksepodr jfg eprdo ;fjgewwsfg dlif ksepodr jfg eprdo ;fjgewreabdgh",
+                    PrefValueType.StringType("dsfg dlif ksepodr jfg eprdo ;fjgewg dlif ksepodr jfg eprdo ;fjgewg dlif ksepodr jfg eprdo ;fjgewwsfg dlif ksepodr jfg eprdo ;fjgewreabdgh"),
                 ),
             ),
         )

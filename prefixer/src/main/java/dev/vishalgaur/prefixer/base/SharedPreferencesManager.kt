@@ -1,4 +1,4 @@
-package dev.vishalgaur.prefixer.core
+package dev.vishalgaur.prefixer.base
 
 import android.content.Context
 import android.content.SharedPreferences

@@ -33,6 +33,7 @@ fun PrefixerTextField(
     placeholder: @Composable () -> Unit,
     infoText: String? = null,
     maxCharacters: Int? = null,
+    validator: (String) -> Boolean = { true },
     @DrawableRes trailingErrorIconRes: Int? = null,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Next,
@@ -48,7 +49,7 @@ fun PrefixerTextField(
         OutlinedTextField(
             value = textFieldState.text,
             onValueChange = {
-                if (maxCharacters == null || it.length <= maxCharacters) {
+                if (validator(it) && (maxCharacters == null || it.length <= maxCharacters)) {
                     textFieldState.text = it
                 }
             },
@@ -95,7 +96,11 @@ fun PrefixerTextField(
                 color = Color.Red,
             )
         } else {
-            Spacer(modifier = Modifier.padding(start = 16.dp, top = 2.dp).height(13.dp))
+            Spacer(
+                modifier = Modifier
+                    .padding(start = 16.dp, top = 2.dp)
+                    .height(13.dp),
+            )
         }
     }
 }

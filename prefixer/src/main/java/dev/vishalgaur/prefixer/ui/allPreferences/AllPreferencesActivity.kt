@@ -5,7 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import dev.vishalgaur.prefixer.Prefixer
-import dev.vishalgaur.prefixer.core.SharedPreferencesManager
+import dev.vishalgaur.prefixer.base.PrefValueType
+import dev.vishalgaur.prefixer.base.SharedPreferencesManager
 import dev.vishalgaur.prefixer.ui.models.PreferencesPair
 import dev.vishalgaur.prefixer.ui.theme.PrefixerTheme
 
@@ -28,8 +29,13 @@ class AllPreferencesActivity : ComponentActivity() {
     private fun Map<String, *>.getPrefsList(): List<PreferencesPair> {
         val prefList = mutableListOf<PreferencesPair>()
         this.forEach { (t, u) ->
+            val value: PrefValueType = when (u) {
+                is Int -> PrefValueType.IntType(u)
+                is Boolean -> PrefValueType.BooleanType(u)
+                else -> PrefValueType.StringType(u?.toString())
+            }
             prefList.add(
-                PreferencesPair(t, u),
+                PreferencesPair(t, value),
             )
         }
         return prefList

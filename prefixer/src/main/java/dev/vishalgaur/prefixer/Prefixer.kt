@@ -2,7 +2,7 @@ package dev.vishalgaur.prefixer
 
 import android.content.Context
 import android.content.Intent
-import dev.vishalgaur.prefixer.core.SharedPreferencesManager
+import dev.vishalgaur.prefixer.base.SharedPreferencesManager
 import dev.vishalgaur.prefixer.ui.allPreferences.AllPreferencesActivity
 
 class Prefixer private constructor(context: Context, preferenceFileName: String) {

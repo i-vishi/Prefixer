@@ -23,11 +23,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.vishalgaur.prefixer.R
+import dev.vishalgaur.prefixer.base.PrefValueType
+import dev.vishalgaur.prefixer.ui.theme.BooleanColor
+import dev.vishalgaur.prefixer.ui.theme.NumberColor
 import dev.vishalgaur.prefixer.ui.theme.PrefixerTheme
 import dev.vishalgaur.prefixer.ui.theme.StringValueColor
 
 @Composable
-internal fun PreferencesPairItemView(modifier: Modifier, key: String, value: Any?) {
+internal fun PreferencesPairItemView(modifier: Modifier, key: String, prefValue: PrefValueType) {
     Row(
         modifier = modifier.wrapContentHeight(),
         verticalAlignment = Alignment.CenterVertically,
@@ -42,13 +45,43 @@ internal fun PreferencesPairItemView(modifier: Modifier, key: String, value: Any
             color = MaterialTheme.colorScheme.primary,
             style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
         )
-        Text(
-            text = "$value", // TODO
-            style = MaterialTheme.typography.bodyMedium,
-            color = StringValueColor,
-            maxLines = 3,
-            overflow = TextOverflow.Ellipsis,
-        )
+
+        PreferenceValueView(prefValue)
+    }
+}
+
+@Composable
+private fun PreferenceValueView(prefValue: PrefValueType) {
+    when (prefValue) {
+        is PrefValueType.BooleanType -> {
+            Text(
+                text = prefValue.value.toString(),
+                style = MaterialTheme.typography.bodyMedium,
+                color = BooleanColor,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+
+        is PrefValueType.IntType -> {
+            Text(
+                text = "${prefValue.value}",
+                style = MaterialTheme.typography.bodyMedium,
+                color = NumberColor,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+
+        is PrefValueType.StringType -> {
+            Text(
+                text = "\"${prefValue.value}\"",
+                style = MaterialTheme.typography.bodyMedium,
+                color = StringValueColor,
+                maxLines = 3,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
     }
 }
 
@@ -81,7 +114,17 @@ private fun PreviewAllPreferencesScreenComponents() {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             AllPreferencesTopAppBar(Modifier.fillMaxWidth())
-            PreferencesPairItemView(Modifier.fillMaxWidth(), "dwfeg", "fsdgh")
+            PreferencesPairItemView(
+                Modifier.fillMaxWidth(),
+                "dwfeg",
+                PrefValueType.StringType("fsdgh"),
+            )
+            PreferencesPairItemView(Modifier.fillMaxWidth(), "dwfeg", PrefValueType.IntType(12))
+            PreferencesPairItemView(
+                Modifier.fillMaxWidth(),
+                "dwfeg",
+                PrefValueType.BooleanType(true),
+            )
         }
     }
 }
