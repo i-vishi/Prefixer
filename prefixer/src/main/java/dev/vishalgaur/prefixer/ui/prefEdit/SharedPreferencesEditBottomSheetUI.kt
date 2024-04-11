@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -98,7 +99,7 @@ fun SharedPreferencesEditBottomSheet(
                 modifier = Modifier
                     .weight(1f)
                     .background(
-                        MaterialTheme.colorScheme.onBackground,
+                        MaterialTheme.colorScheme.background,
                         shape = RoundedCornerShape(4.dp),
                     )
                     .border(
@@ -126,10 +127,11 @@ fun SharedPreferencesEditBottomSheet(
                 color = StringValueColor,
             )
             PrefValueEditView(
-                prefValue,
-                valueFieldState,
-                focusRequester,
-                keyboardController,
+                modifier = Modifier,
+                prefValue = prefValue,
+                valueFieldState = valueFieldState,
+                focusRequester = focusRequester,
+                keyboardController = keyboardController,
                 onEditBoolean = {
                     booleanValueState.value = it
                 },
@@ -157,6 +159,7 @@ fun SharedPreferencesEditBottomSheet(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun RowScope.PrefValueEditView(
+    modifier: Modifier,
     prefValue: PrefValueType,
     valueFieldState: TextFieldState,
     focusRequester: FocusRequester,
@@ -165,15 +168,20 @@ private fun RowScope.PrefValueEditView(
 ) {
     when (prefValue) {
         is PrefValueType.BooleanType -> {
-            val checkState by remember { mutableStateOf(prefValue.value) }
-            Checkbox(checked = checkState, onCheckedChange = {
-                onEditBoolean(it)
-            })
+            var checkState by remember { mutableStateOf(prefValue.value) }
+            Checkbox(
+                modifier = modifier,
+                checked = checkState,
+                onCheckedChange = {
+                    checkState = it
+                    onEditBoolean(it)
+                },
+            )
         }
 
         is PrefValueType.StringType, is PrefValueType.IntType -> {
             PrefixerTextField(
-                modifier = Modifier
+                modifier = modifier
                     .focusRequester(focusRequester)
                     .weight(1f),
                 textFieldState = valueFieldState,
