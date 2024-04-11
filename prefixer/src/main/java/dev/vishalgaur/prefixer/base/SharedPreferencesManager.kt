@@ -2,8 +2,9 @@ package dev.vishalgaur.prefixer.base
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 
-class SharedPreferencesManager(context: Context, val preferenceFileName: String) {
+internal class SharedPreferencesManager(context: Context, val preferenceFileName: String) {
 
     private var sharedPreferences: SharedPreferences =
         context.applicationContext.getSharedPreferences(preferenceFileName, Context.MODE_PRIVATE)
@@ -15,6 +16,26 @@ class SharedPreferencesManager(context: Context, val preferenceFileName: String)
      */
     fun getAllPreferences(): Map<String, *> {
         return sharedPreferences.all
+    }
+
+    fun updateSharedPreference(pref: Pair<String, PrefValueType>) {
+        try {
+            val editor = sharedPreferences.edit()
+            when (pref.second) {
+                is PrefValueType.BooleanType -> {
+                    editor.putBoolean(pref.first, pref.second.value as Boolean)
+                }
+                is PrefValueType.LongType -> {
+                    editor.putLong(pref.first, pref.second.value as Long)
+                }
+                is PrefValueType.StringType -> {
+                    editor.putString(pref.first, pref.second.value as String)
+                }
+            }
+            editor.apply()
+        } catch (e: Exception) {
+            Log.e(TAG, e.message.toString(), e)
+        }
     }
 
 //    private fun getDefaultSharedPreferencesName(context: Context): String {
@@ -29,4 +50,8 @@ class SharedPreferencesManager(context: Context, val preferenceFileName: String)
 //        }
 //        throw IllegalStateException("Unknown shared preferences $name")
 //    }
+
+    companion object {
+        const val TAG = "SharedPreferencesManager"
+    }
 }

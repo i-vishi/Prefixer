@@ -22,7 +22,7 @@ class AllPreferencesActivity : ComponentActivity() {
                     prefsName = spManager.preferenceFileName,
                     prefsList = allPrefs.getPrefsList(),
                     onUpdatePref = {
-
+                        spManager.updateSharedPreference(it.key to it.value)
                     },
                 )
             }
@@ -33,7 +33,7 @@ class AllPreferencesActivity : ComponentActivity() {
         val prefList = mutableListOf<PreferencesPair>()
         this.forEach { (t, u) ->
             val value: PrefValueType = when (u) {
-                is Int -> PrefValueType.IntType(u)
+                is Number -> PrefValueType.LongType(u.toLong())
                 is Boolean -> PrefValueType.BooleanType(u)
                 else -> PrefValueType.StringType(u?.toString())
             }

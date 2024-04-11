@@ -73,6 +73,7 @@ internal fun AllPreferencesScreen(prefsName: String, prefsList: List<Preferences
                 prefValue = selectedPref.value,
                 onSubmit = {
                     coroutineScope.launch {
+                        onUpdatePref(PreferencesPair(selectedPref.key, it))
                         sheetState.hide()
                     }.invokeOnCompletion {
                         setSelectedPref(null)
@@ -157,7 +158,7 @@ private fun PreviewAllPreferencesScreen() {
         AllPreferencesScreen(
             prefsName = "app_prefs",
             prefsList = listOf(
-                PreferencesPair("dsf", PrefValueType.IntType(4354)),
+                PreferencesPair("dsf", PrefValueType.LongType(4354)),
                 PreferencesPair("dsfd", PrefValueType.BooleanType(false)),
                 PreferencesPair(
                     "dsfdfsgdd",

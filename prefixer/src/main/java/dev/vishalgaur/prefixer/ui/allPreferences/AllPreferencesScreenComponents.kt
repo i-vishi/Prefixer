@@ -63,7 +63,7 @@ private fun PreferenceValueView(prefValue: PrefValueType) {
             )
         }
 
-        is PrefValueType.IntType -> {
+        is PrefValueType.LongType -> {
             Text(
                 text = "${prefValue.value}",
                 style = MaterialTheme.typography.bodyMedium,
@@ -119,7 +119,7 @@ private fun PreviewAllPreferencesScreenComponents() {
                 "dwfeg",
                 PrefValueType.StringType("fsdgh"),
             )
-            PreferencesPairItemView(Modifier.fillMaxWidth(), "dwfeg", PrefValueType.IntType(12))
+            PreferencesPairItemView(Modifier.fillMaxWidth(), "dwfeg", PrefValueType.LongType(12))
             PreferencesPairItemView(
                 Modifier.fillMaxWidth(),
                 "dwfeg",

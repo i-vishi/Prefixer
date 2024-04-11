@@ -153,7 +153,10 @@ fun SharedPreferencesEditBottomSheet(
                 onClick = {
                     val value = when (prefValue) {
                         is PrefValueType.BooleanType -> PrefValueType.BooleanType(booleanValueState.value)
-                        is PrefValueType.IntType -> PrefValueType.IntType(valueFieldState.text.toInt())
+                        is PrefValueType.LongType -> {
+                            valueFieldState.text.toLongOrNull()?.let { PrefValueType.LongType(it) }
+                                ?: PrefValueType.StringType(valueFieldState.text)
+                        }
                         is PrefValueType.StringType -> PrefValueType.StringType(valueFieldState.text)
                     }
                     onSubmit(value)
@@ -189,24 +192,24 @@ private fun RowScope.PrefValueEditView(
             )
         }
 
-        is PrefValueType.StringType, is PrefValueType.IntType -> {
+        is PrefValueType.StringType, is PrefValueType.LongType -> {
             PrefixerTextField(
                 modifier = modifier
                     .focusRequester(focusRequester)
                     .weight(1f),
                 textFieldState = valueFieldState,
                 validator = {
-                    if (prefValue is PrefValueType.IntType) it.isDigitsOnly() else true
+                    if (prefValue is PrefValueType.LongType) it.isDigitsOnly() else true
                 },
                 placeholder = {},
                 maxCharacters = 50,
-                keyboardType = if (prefValue is PrefValueType.IntType) KeyboardType.Number else KeyboardType.Text,
+                keyboardType = if (prefValue is PrefValueType.LongType) KeyboardType.Number else KeyboardType.Text,
                 textStyle = MaterialTheme.typography.bodyLarge,
                 imeAction = ImeAction.Done,
                 onImeAction = {
                     keyboardController?.hide()
                 },
-                maxLines = 4,
+                maxLines = 6,
                 minLines = 1,
             )
         }
