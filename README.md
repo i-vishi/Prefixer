@@ -5,9 +5,9 @@ Prefixer is an intuitive Android library designed for developers to effortlessly
 
 ## Snapshots
 
-|           All Preferences Activity          |             Edit Preferences             |
-| :-----------------------------------------: | :--------------------------------------: |
-| ![](snapshots/all_preferences_activity.png) | ![](snapshots/edit_pref_bottomsheet.png) |
+|          All Preferences Activity           |      Edit String/Number Preferences      |       Edit Boolean Preferences       |
+|:-------------------------------------------:|:----------------------------------------:|:------------------------------------:|
+| ![](snapshots/all_preferences_activity.png) | ![](snapshots/edit_pref_bottomsheet.png) | ![](snapshots/edit_boolean_pref.png) |
 
 
 ## Features
