@@ -4,7 +4,7 @@ import androidx.annotation.Keep
 import dev.vishalgaur.prefixer.base.PrefValueType
 
 @Keep
-data class PreferencesPair(
+internal data class PreferencesPair(
     val key: String,
     val value: PrefValueType,
 )
