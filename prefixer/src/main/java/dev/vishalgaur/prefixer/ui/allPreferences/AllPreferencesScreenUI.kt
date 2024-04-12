@@ -2,6 +2,7 @@ package dev.vishalgaur.prefixer.ui.allPreferences
 
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -99,9 +100,11 @@ internal fun AllPreferencesScreen(prefsName: String, prefsList: List<Preferences
         ) {
             stickyHeader {
                 PrefsNameStickyHeader(
-                    modifier = Modifier
+                    modifier = Modifier.fillMaxWidth()
+                        .wrapContentHeight()
+                        .background(MaterialTheme.colorScheme.background)
                         .padding(horizontal = 16.dp)
-                        .padding(bottom = 10.dp),
+                        .padding(top = 8.dp, bottom = 10.dp),
                     prefsName = prefsName,
                 )
             }
