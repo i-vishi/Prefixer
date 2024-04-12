@@ -116,7 +116,7 @@ private fun PreviewAllPreferencesScreenComponents() {
             AllPreferencesTopAppBar(Modifier.fillMaxWidth())
             PreferencesPairItemView(
                 Modifier.fillMaxWidth(),
-                "dwfeg",
+                "dwffbkurjsbfvosjbvksdjxbvoseg",
                 PrefValueType.StringType("fsdgh"),
             )
             PreferencesPairItemView(Modifier.fillMaxWidth(), "dwfeg", PrefValueType.LongType(12))

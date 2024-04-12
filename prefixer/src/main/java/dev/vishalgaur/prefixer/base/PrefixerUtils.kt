@@ -12,6 +12,7 @@ internal object PrefixerUtils {
         }
     }
 
+    @Throws(NumberFormatException::class)
     internal fun parsePrefValue(prefValue: PrefValueType, booleanValue: Boolean, stringValue: String): PrefValueType {
         return when (prefValue) {
             is PrefValueType.BooleanType -> PrefValueType.BooleanType(booleanValue)

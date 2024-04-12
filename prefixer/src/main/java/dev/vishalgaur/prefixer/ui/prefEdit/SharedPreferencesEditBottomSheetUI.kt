@@ -1,6 +1,7 @@
 package dev.vishalgaur.prefixer.ui.prefEdit
 
 import android.content.res.Configuration
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -31,6 +32,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
@@ -55,9 +57,11 @@ internal fun SharedPreferencesEditBottomSheet(
     onSubmit: (value: PrefValueType) -> Unit,
     onCancel: () -> Unit,
 ) {
+    val context = LocalContext.current
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
-    val valueFieldState = remember { PrefixerTextFieldState(initialValue = prefValue.value.toString()) }
+    val valueFieldState =
+        remember { PrefixerTextFieldState(initialValue = prefValue.value.toString()) }
     val booleanValueState = remember {
         mutableStateOf(
             if (prefValue is PrefValueType.BooleanType) prefValue.value else false,
@@ -151,13 +155,16 @@ internal fun SharedPreferencesEditBottomSheet(
             Button(
                 modifier = Modifier.weight(1f),
                 onClick = {
-                    onSubmit(
-                        PrefixerUtils.parsePrefValue(
+                    try {
+                        val parsedValue = PrefixerUtils.parsePrefValue(
                             prefValue = prefValue,
                             booleanValue = booleanValueState.value,
                             stringValue = valueFieldState.text,
-                        ),
-                    )
+                        )
+                        onSubmit(parsedValue)
+                    } catch (e: Exception) {
+                        Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+                    }
                 },
             ) {
                 Text(text = "Save")
