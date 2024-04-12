@@ -39,7 +39,7 @@ internal fun PreferencesPairItemView(modifier: Modifier, key: String, prefValue:
         Text(
             modifier = Modifier
                 .padding(end = 8.dp)
-                .widthIn(max = 180.dp)
+                .widthIn(max = 120.dp)
                 .wrapContentSize(),
             text = "\"${key}\" :",
             color = MaterialTheme.colorScheme.primary,
