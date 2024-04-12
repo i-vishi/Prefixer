@@ -16,6 +16,7 @@ retrofit2 = "2.9.0"
 okHttp3 =  "4.11.0"
 gson = "2.10.1"
 mavenPublishVersion = "0.28.0"
+prefixer = "1.0.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -40,6 +41,7 @@ retrofit2 = { group = "com.squareup.retrofit2", name = "retrofit", version.ref =
 gsonConvertor = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit2" }
 okHttp3 = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okHttp3" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+prefixer = { group = "dev.vishalgaur", name = "prefixer", version.ref = "prefixer" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

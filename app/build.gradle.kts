@@ -94,7 +94,8 @@ dependencies {
 
     implementation(project(":core"))
     // add prefixer dependency
-    implementation(project(":prefixer"))
+//    implementation(project(":prefixer"))
+    implementation(libs.prefixer)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
