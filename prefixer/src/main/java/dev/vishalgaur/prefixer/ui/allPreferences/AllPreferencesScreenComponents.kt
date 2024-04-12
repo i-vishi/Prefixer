@@ -63,22 +63,22 @@ private fun PreferenceValueView(prefValue: PrefValueType) {
             )
         }
 
-        is PrefValueType.LongType -> {
-            Text(
-                text = "${prefValue.value}",
-                style = MaterialTheme.typography.bodyMedium,
-                color = NumberColor,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-        }
-
         is PrefValueType.StringType -> {
             Text(
                 text = "\"${prefValue.value}\"",
                 style = MaterialTheme.typography.bodyMedium,
                 color = StringValueColor,
                 maxLines = 3,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+
+        else -> {
+            Text(
+                text = "${prefValue.value}",
+                style = MaterialTheme.typography.bodyMedium,
+                color = NumberColor,
+                maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
         }

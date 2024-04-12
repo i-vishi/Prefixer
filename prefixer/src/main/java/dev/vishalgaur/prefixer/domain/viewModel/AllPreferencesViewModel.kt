@@ -46,9 +46,17 @@ internal class AllPreferencesViewModel : ViewModel() {
         val prefList = mutableListOf<PreferencesPair>()
         this.forEach { (t, u) ->
             val value: PrefValueType = when (u) {
-                is Number -> PrefValueType.LongType(u.toLong())
                 is Boolean -> PrefValueType.BooleanType(u)
-                else -> PrefValueType.StringType(u?.toString())
+                is Long -> PrefValueType.LongType(u)
+                is Int -> PrefValueType.IntType(u)
+                is Float -> PrefValueType.FloatType(u)
+                else -> {
+                    if (u == null || u is String) {
+                        PrefValueType.StringType(u?.toString())
+                    } else {
+                        throw IllegalArgumentException("Invalid type")
+                    }
+                }
             }
             prefList.add(
                 PreferencesPair(t, value),

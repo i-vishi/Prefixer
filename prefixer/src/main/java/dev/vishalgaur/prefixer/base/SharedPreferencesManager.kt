@@ -2,6 +2,8 @@ package dev.vishalgaur.prefixer.base
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
+import android.preference.PreferenceManager
 import android.util.Log
 
 internal class SharedPreferencesManager(context: Context, val preferenceFileName: String) {
@@ -31,6 +33,12 @@ internal class SharedPreferencesManager(context: Context, val preferenceFileName
                 is PrefValueType.StringType -> {
                     editor.putString(pref.first, pref.second.value as String)
                 }
+                is PrefValueType.FloatType -> {
+                    editor.putFloat(pref.first, pref.second.value as Float)
+                }
+                is PrefValueType.IntType -> {
+                    editor.putInt(pref.first, pref.second.value as Int)
+                }
             }
             editor.apply()
         } catch (e: Exception) {
@@ -38,9 +46,12 @@ internal class SharedPreferencesManager(context: Context, val preferenceFileName
         }
     }
 
-//    private fun getDefaultSharedPreferencesName(context: Context): String {
-//        return PreferenceManager.getDefaultSharedPreferencesName(context)
-//    }
+    private fun getDefaultSharedPreferencesName(context: Context): String {
+        return if (Build.VERSION.SDK_INT >= 24) {
+            PreferenceManager.getDefaultSharedPreferencesName(context)
+        } else
+            context.packageName + "_preferences"
+    }
 //
 //    private fun getSharedPreferencesFor(name: String): SharedPreferences {
 //        for ((key, value) in sharedPreferences.entrySet()) {
@@ -52,6 +63,6 @@ internal class SharedPreferencesManager(context: Context, val preferenceFileName
 //    }
 
     companion object {
-        const val TAG = "SharedPreferencesManager"
+        const val TAG = "SharedPrefsManager"
     }
 }

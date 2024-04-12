@@ -38,8 +38,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.text.isDigitsOnly
 import dev.vishalgaur.prefixer.base.PrefValueType
+import dev.vishalgaur.prefixer.base.PrefixerUtils
 import dev.vishalgaur.prefixer.core.state.PrefixerTextFieldState
 import dev.vishalgaur.prefixer.core.ui.PrefixerTextField
 import dev.vishalgaur.prefixer.ui.theme.PrefixerTheme
@@ -151,15 +151,13 @@ internal fun SharedPreferencesEditBottomSheet(
             Button(
                 modifier = Modifier.weight(1f),
                 onClick = {
-                    val value = when (prefValue) {
-                        is PrefValueType.BooleanType -> PrefValueType.BooleanType(booleanValueState.value)
-                        is PrefValueType.LongType -> {
-                            valueFieldState.text.toLongOrNull()?.let { PrefValueType.LongType(it) }
-                                ?: PrefValueType.StringType(valueFieldState.text)
-                        }
-                        is PrefValueType.StringType -> PrefValueType.StringType(valueFieldState.text)
-                    }
-                    onSubmit(value)
+                    onSubmit(
+                        PrefixerUtils.parsePrefValue(
+                            prefValue = prefValue,
+                            booleanValue = booleanValueState.value,
+                            stringValue = valueFieldState.text,
+                        ),
+                    )
                 },
             ) {
                 Text(text = "Save")
@@ -192,18 +190,18 @@ private fun RowScope.PrefValueEditView(
             )
         }
 
-        is PrefValueType.StringType, is PrefValueType.LongType -> {
+        else -> {
             PrefixerTextField(
                 modifier = modifier
                     .focusRequester(focusRequester)
                     .weight(1f),
                 textFieldState = valueFieldState,
                 validator = {
-                    if (prefValue is PrefValueType.LongType) it.isDigitsOnly() else true
+                    PrefixerUtils.validateStringInput(it, prefValue)
                 },
                 placeholder = {},
                 maxCharacters = 50,
-                keyboardType = if (prefValue is PrefValueType.LongType) KeyboardType.Number else KeyboardType.Text,
+                keyboardType = if (prefValue is PrefValueType.StringType) KeyboardType.Text else KeyboardType.Decimal,
                 textStyle = MaterialTheme.typography.bodyLarge,
                 imeAction = ImeAction.Done,
                 onImeAction = {
