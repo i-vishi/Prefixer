@@ -47,6 +47,7 @@ import dev.vishalgaur.prefixer.core.state.PrefixerTextFieldState
 import dev.vishalgaur.prefixer.core.ui.PrefixerTextField
 import dev.vishalgaur.prefixer.ui.theme.PrefixerTheme
 import dev.vishalgaur.prefixer.ui.theme.StringValueColor
+import java.math.MathContext
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
@@ -61,8 +62,13 @@ internal fun SharedPreferencesEditBottomSheet(
     val context = LocalContext.current
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
-    val valueFieldState =
-        remember { PrefixerTextFieldState(initialValue = prefValue.value.toString()) }
+    val valueFieldState = remember {
+        PrefixerTextFieldState(
+            initialValue = if (prefValue is PrefValueType.FloatType) {
+                prefValue.value.toBigDecimal(mathContext = MathContext.DECIMAL128).toString()
+            } else prefValue.value.toString(),
+        )
+    }
     val booleanValueState = remember {
         mutableStateOf(
             if (prefValue is PrefValueType.BooleanType) prefValue.value else false,
@@ -167,7 +173,7 @@ internal fun SharedPreferencesEditBottomSheet(
                         Toast.makeText(
                             context,
                             "Expected ${prefValue.javaClass.simpleName}. $e",
-                            Toast.LENGTH_LONG
+                            Toast.LENGTH_LONG,
                         ).show()
                         Log.e("Prefixer", e.message.toString(), e)
                     }

@@ -1,6 +1,7 @@
 package dev.vishalgaur.prefixer.base
 
 import androidx.core.text.isDigitsOnly
+import java.math.MathContext
 
 internal object PrefixerUtils {
 
@@ -13,12 +14,16 @@ internal object PrefixerUtils {
     }
 
     @Throws(NumberFormatException::class)
-    internal fun parsePrefValue(prefValue: PrefValueType, booleanValue: Boolean, stringValue: String): PrefValueType {
+    internal fun parsePrefValue(
+        prefValue: PrefValueType,
+        booleanValue: Boolean,
+        stringValue: String,
+    ): PrefValueType {
         return when (prefValue) {
             is PrefValueType.BooleanType -> PrefValueType.BooleanType(booleanValue)
             is PrefValueType.LongType -> PrefValueType.LongType(stringValue.toLong())
             is PrefValueType.IntType -> PrefValueType.IntType(stringValue.toInt())
-            is PrefValueType.FloatType -> PrefValueType.FloatType(stringValue.toFloat())
+            is PrefValueType.FloatType -> PrefValueType.FloatType(stringValue.toBigDecimal(mathContext = MathContext.DECIMAL128).toFloat())
             is PrefValueType.StringType -> PrefValueType.StringType(stringValue)
         }
     }

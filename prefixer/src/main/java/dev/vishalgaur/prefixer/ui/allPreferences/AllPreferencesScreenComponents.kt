@@ -28,6 +28,7 @@ import dev.vishalgaur.prefixer.ui.theme.BooleanColor
 import dev.vishalgaur.prefixer.ui.theme.NumberColor
 import dev.vishalgaur.prefixer.ui.theme.PrefixerTheme
 import dev.vishalgaur.prefixer.ui.theme.StringValueColor
+import java.math.MathContext
 
 @Composable
 internal fun PreferencesPairItemView(modifier: Modifier, key: String, prefValue: PrefValueType) {
@@ -53,22 +54,22 @@ internal fun PreferencesPairItemView(modifier: Modifier, key: String, prefValue:
 @Composable
 private fun PreferenceValueView(prefValue: PrefValueType) {
     when (prefValue) {
-        is PrefValueType.BooleanType -> {
-            Text(
-                text = prefValue.value.toString(),
-                style = MaterialTheme.typography.bodyMedium,
-                color = BooleanColor,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-        }
-
         is PrefValueType.StringType -> {
             Text(
                 text = "\"${prefValue.value}\"",
                 style = MaterialTheme.typography.bodyMedium,
                 color = StringValueColor,
-                maxLines = 3,
+                maxLines = 4,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+
+        is PrefValueType.FloatType -> {
+            Text(
+                text = prefValue.value.toBigDecimal(mathContext = MathContext.DECIMAL128).toString(),
+                style = MaterialTheme.typography.bodyMedium,
+                color = NumberColor,
+                maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
         }
@@ -77,7 +78,7 @@ private fun PreferenceValueView(prefValue: PrefValueType) {
             Text(
                 text = "${prefValue.value}",
                 style = MaterialTheme.typography.bodyMedium,
-                color = NumberColor,
+                color = if (prefValue is PrefValueType.BooleanType) BooleanColor else NumberColor,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )

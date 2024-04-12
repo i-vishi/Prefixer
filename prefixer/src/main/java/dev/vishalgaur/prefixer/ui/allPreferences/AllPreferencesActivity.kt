@@ -26,7 +26,8 @@ internal class AllPreferencesActivity : ComponentActivity() {
                 val allPrefs by viewModel.allPreferencesFlow.collectAsState()
 
                 AllPreferencesScreen(
-                    prefsName = spManager.preferenceFileName,
+                    prefsName = spManager.preferenceFileName
+                        ?: SharedPreferencesManager.getDefaultSharedPreferencesName(this),
                     prefsList = allPrefs,
                     onUpdatePref = {
                         viewModel.updateSharedPreference(spManager, it)
