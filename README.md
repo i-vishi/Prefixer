@@ -11,11 +11,6 @@ Prefixer is an intuitive Android library designed for developers to effortlessly
 
 ## Getting Started
 
-### Prerequisites
-
-- Android SDK
-- Android x.x (Minimum SDK Version xx) // Please adjust according to your actual minimum SDK requirement.
-
 ### Installation
 
 To add Prefixer to your project, follow these steps:
