@@ -1,6 +1,7 @@
 package dev.vishalgaur.prefixer.ui.prefEdit
 
 import android.content.res.Configuration
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -163,7 +164,12 @@ internal fun SharedPreferencesEditBottomSheet(
                         )
                         onSubmit(parsedValue)
                     } catch (e: Exception) {
-                        Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            context,
+                            "Expected ${prefValue.javaClass.simpleName}. $e",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        Log.e("Prefixer", e.message.toString(), e)
                     }
                 },
             ) {
