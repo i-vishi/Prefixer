@@ -14,7 +14,7 @@ Prefixer is an intuitive Android library designed for developers to effortlessly
 
 - **Easy Initialization**: Quick setup with just one line of code.
 - **User-Friendly UI**: Launches a new activity displaying all SharedPreferences in a clean and interactive interface.
-- **Edit Preferences**: Allows editing of SharedPreferences values directly from the UI with a simple long-press.
+- **Edit Preferences**: Allows editing of SharedPreferences values directly from the UI with a simple ***long-press***.
 - **Seamless Integration**: Easily integrates into existing Android projects without hassle.
 
 ## Getting Started
