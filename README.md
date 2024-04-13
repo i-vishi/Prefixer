@@ -45,7 +45,7 @@ To add Prefixer to your project, follow these steps:
 
 To utilize Prefixer in your application, adhere to these steps:
 
-1. Initialize Prefixer in your Application class:
+1. Initialize Prefixer in your Activity class:
    ```kotlin
    class MyActivity : ComponentActivity() {
       override fun onCreate() {
