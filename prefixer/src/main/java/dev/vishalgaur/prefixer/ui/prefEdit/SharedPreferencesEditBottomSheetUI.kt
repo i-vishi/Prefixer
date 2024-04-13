@@ -43,8 +43,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.vishalgaur.prefixer.base.PrefValueType
 import dev.vishalgaur.prefixer.base.PrefixerUtils
-import dev.vishalgaur.prefixer.core.state.PrefixerTextFieldState
-import dev.vishalgaur.prefixer.core.ui.PrefixerTextField
+import dev.vishalgaur.prefixer.base.state.PrefixerTextFieldState
+import dev.vishalgaur.prefixer.base.ui.PrefixerTextField
 import dev.vishalgaur.prefixer.ui.theme.PrefixerTheme
 import dev.vishalgaur.prefixer.ui.theme.StringValueColor
 import java.math.MathContext

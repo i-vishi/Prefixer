@@ -1,4 +1,4 @@
-package dev.vishalgaur.prefixer.core.ui
+package dev.vishalgaur.prefixer.base.ui
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Column
@@ -24,7 +24,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import dev.vishalgaur.prefixer.core.state.PrefixerTextFieldState
+import dev.vishalgaur.prefixer.base.state.PrefixerTextFieldState
 
 @Composable
 fun PrefixerTextField(

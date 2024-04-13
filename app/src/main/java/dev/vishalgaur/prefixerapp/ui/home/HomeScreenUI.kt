@@ -59,8 +59,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.vishalgaur.prefixer.core.state.PrefixerTextFieldState
-import dev.vishalgaur.prefixer.core.ui.PrefixerTextField
+import dev.vishalgaur.prefixer.core.state.PrefixerAppTextFieldState
+import dev.vishalgaur.prefixer.core.ui.PrefixerAppTextField
 import dev.vishalgaur.prefixerapp.BuildConfig
 import dev.vishalgaur.prefixerapp.R
 import dev.vishalgaur.prefixerapp.ui.model.CityWeatherData
@@ -83,7 +83,7 @@ fun HomeScreenUI(
 
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
-    val searchCityState = remember { PrefixerTextFieldState(initialValue = "") }
+    val searchCityState = remember { PrefixerAppTextFieldState(initialValue = "") }
     val (errorOccurred, setErrorOccurred) = remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = errorOccurred) {
@@ -161,7 +161,7 @@ fun HomeScreenUI(
 @Composable
 private fun ColumnScope.HomeSuccessUI(
     focusRequester: FocusRequester,
-    searchCityState: PrefixerTextFieldState,
+    searchCityState: PrefixerAppTextFieldState,
     uiData: HomeUiData,
     keyboardController: SoftwareKeyboardController?,
     onSearchCity: (String) -> Unit,
@@ -172,7 +172,7 @@ private fun ColumnScope.HomeSuccessUI(
             .weight(1f),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        PrefixerTextField(
+        PrefixerAppTextField(
             modifier = Modifier
                 .focusRequester(focusRequester)
                 .padding(start = 16.dp, end = 16.dp, top = 32.dp),
