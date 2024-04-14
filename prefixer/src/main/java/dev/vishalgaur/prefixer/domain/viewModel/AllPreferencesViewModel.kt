@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.SortedSet
 
 internal class AllPreferencesViewModel : ViewModel() {
 
@@ -35,7 +36,10 @@ internal class AllPreferencesViewModel : ViewModel() {
         getAllPreferences(spManager)
     }
 
-    fun updateSharedPreference(spManager: SharedPreferencesManager, preferencesPair: PreferencesPair) {
+    fun updateSharedPreference(
+        spManager: SharedPreferencesManager,
+        preferencesPair: PreferencesPair
+    ) {
         viewModelScope.launch {
             spManager.updateSharedPreference(preferencesPair.key to preferencesPair.value)
             delay(100)
@@ -44,7 +48,8 @@ internal class AllPreferencesViewModel : ViewModel() {
     }
 
     private fun Map<String, *>.getPrefsList(): List<PreferencesPair> {
-        val prefList = mutableListOf<PreferencesPair>()
+        val prefList: SortedSet<PreferencesPair> =
+            sortedSetOf(compareBy<PreferencesPair> { it.key })
         this.forEach { (t, u) ->
             val value: PrefValueType = when (u) {
                 is Boolean -> PrefValueType.BooleanType(u)
@@ -60,11 +65,9 @@ internal class AllPreferencesViewModel : ViewModel() {
                     }
                 }
             }
-            prefList.add(
-                PreferencesPair(t, value),
-            )
+            prefList.add(PreferencesPair(t, value))
         }
-        return prefList
+        return prefList.toList()
     }
 
     companion object {
