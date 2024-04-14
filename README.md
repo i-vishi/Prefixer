@@ -37,7 +37,7 @@ To add Prefixer to your project, follow these steps:
 
     ```gradle
     dependencies {
-       implementation 'dev.vishalgaur:prefixer:1.0.3'
+       implementation 'dev.vishalgaur:prefixer:1.2.0'
     }
     ```
 
