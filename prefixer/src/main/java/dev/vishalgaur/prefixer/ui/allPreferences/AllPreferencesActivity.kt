@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import dev.vishalgaur.prefixer.Prefixer
 import dev.vishalgaur.prefixer.base.SharedPreferencesManager
 import dev.vishalgaur.prefixer.domain.viewModel.AllPreferencesViewModel
@@ -21,14 +22,17 @@ internal class AllPreferencesActivity : ComponentActivity() {
         enableEdgeToEdge()
         val spManager: SharedPreferencesManager = Prefixer.INSTANCE.sharedPreferencesManager
         viewModel.getAllPreferences(spManager)
+
         setContent {
             PrefixerTheme {
                 val allPrefs by viewModel.allPreferencesFlow.collectAsState()
+                val isLoading by viewModel.isLoading.observeAsState()
 
                 AllPreferencesScreen(
                     prefsName = spManager.preferenceFileName
                         ?: SharedPreferencesManager.getDefaultSharedPreferencesName(this),
                     prefsList = allPrefs,
+                    isLoading = isLoading != false,
                     onUpdatePref = {
                         viewModel.updateSharedPreference(spManager, it)
                     },

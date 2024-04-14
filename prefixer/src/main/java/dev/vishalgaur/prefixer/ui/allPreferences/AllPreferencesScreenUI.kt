@@ -1,10 +1,16 @@
 package dev.vishalgaur.prefixer.ui.allPreferences
 
 import android.content.res.Configuration
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -13,11 +19,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -31,10 +39,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.vishalgaur.prefixer.R
 import dev.vishalgaur.prefixer.base.PrefValueType
 import dev.vishalgaur.prefixer.ui.models.PreferencesPair
 import dev.vishalgaur.prefixer.ui.prefEdit.SharedPreferencesEditBottomSheet
@@ -43,7 +55,12 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
-internal fun AllPreferencesScreen(prefsName: String, prefsList: List<PreferencesPair>, onUpdatePref: (PreferencesPair) -> Unit) {
+internal fun AllPreferencesScreen(
+    prefsName: String,
+    isLoading: Boolean,
+    prefsList: List<PreferencesPair>,
+    onUpdatePref: (PreferencesPair) -> Unit,
+) {
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState()
@@ -91,43 +108,75 @@ internal fun AllPreferencesScreen(prefsName: String, prefsList: List<Preferences
                 },
             )
         }
-        LazyColumn(
-            modifier = Modifier
-                .padding(it)
-                .fillMaxSize(),
-            contentPadding = PaddingValues(vertical = 16.dp),
-            state = listState,
-        ) {
-            stickyHeader {
-                PrefsNameStickyHeader(
-                    modifier = Modifier.fillMaxWidth()
-                        .wrapContentHeight()
-                        .background(MaterialTheme.colorScheme.background)
-                        .padding(horizontal = 16.dp)
-                        .padding(top = 8.dp, bottom = 10.dp),
-                    prefsName = prefsName,
-                )
-            }
-            prefsList.forEachIndexed { index, prefItem ->
-                item(key = prefItem.key) {
-                    PreferencesPairItemView(
+        if (isLoading) {
+            LoadingUI(
+                modifier = Modifier
+                    .padding(40.dp)
+                    .fillMaxSize(),
+            )
+        } else {
+            LazyColumn(
+                modifier = Modifier
+                    .padding(it)
+                    .fillMaxSize(),
+                contentPadding = PaddingValues(vertical = 16.dp),
+                state = listState,
+            ) {
+                stickyHeader {
+                    PrefsNameStickyHeader(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .combinedClickable(
-                                onLongClick = {
-                                    setSelectedPref(prefItem)
-                                    showBottomSheet = true
-                                },
-                                onClick = {},
-                            )
-                            .padding(vertical = 8.dp, horizontal = 16.dp),
-                        key = prefItem.key,
-                        prefValue = prefItem.value,
+                            .wrapContentHeight()
+                            .background(MaterialTheme.colorScheme.background)
+                            .padding(horizontal = 16.dp)
+                            .padding(top = 8.dp, bottom = 10.dp),
+                        prefsName = prefsName,
                     )
-                    Divider(modifier = Modifier.padding(horizontal = 16.dp))
+                }
+                prefsList.forEachIndexed { index, prefItem ->
+                    item(key = prefItem.key) {
+                        PreferencesPairItemView(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .combinedClickable(
+                                    onLongClick = {
+                                        setSelectedPref(prefItem)
+                                        showBottomSheet = true
+                                    },
+                                    onClick = {},
+                                )
+                                .padding(vertical = 8.dp, horizontal = 16.dp),
+                            key = prefItem.key,
+                            prefValue = prefItem.value,
+                        )
+                        Divider(modifier = Modifier.padding(horizontal = 16.dp))
+                    }
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun LoadingUI(modifier: Modifier) {
+    val infiniteTransition = rememberInfiniteTransition()
+    val angle by infiniteTransition.animateFloat(
+        initialValue = 0F,
+        targetValue = 360F,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1000, easing = LinearEasing),
+        ),
+    )
+    Box(modifier = modifier.fillMaxSize()) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_loop_96),
+            contentDescription = "Loading",
+            modifier = Modifier
+                .align(Alignment.Center)
+                .size(96.dp)
+                .graphicsLayer { rotationZ = angle },
+            tint = Color.Black,
+        )
     }
 }
 
@@ -169,6 +218,7 @@ private fun PreviewAllPreferencesScreen() {
                 ),
             ),
             onUpdatePref = {},
+            isLoading = false,
         )
     }
 }

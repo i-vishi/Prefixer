@@ -1,6 +1,8 @@
 package dev.vishalgaur.prefixer.domain.viewModel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.vishalgaur.prefixer.base.PrefValueType
@@ -17,6 +19,9 @@ import java.util.SortedSet
 
 internal class AllPreferencesViewModel : ViewModel() {
 
+    private val _isLoading = MutableLiveData(true)
+    val isLoading: LiveData<Boolean> get() = _isLoading
+
     private val _allPreferencesList = MutableStateFlow<List<PreferencesPair>>(emptyList())
     var allPreferencesFlow: StateFlow<List<PreferencesPair>> = _allPreferencesList.stateIn(
         viewModelScope,
@@ -26,8 +31,13 @@ internal class AllPreferencesViewModel : ViewModel() {
 
     fun getAllPreferences(spManager: SharedPreferencesManager) {
         viewModelScope.launch {
+            _isLoading.value = true
             _allPreferencesList.update {
-                spManager.getAllPreferences().getPrefsList()
+                val prefs = spManager.getAllPreferences()
+                val prefsList = prefs.getPrefsList()
+                delay(100)
+                _isLoading.value = false
+                prefsList
             }
         }
     }
@@ -38,7 +48,7 @@ internal class AllPreferencesViewModel : ViewModel() {
 
     fun updateSharedPreference(
         spManager: SharedPreferencesManager,
-        preferencesPair: PreferencesPair
+        preferencesPair: PreferencesPair,
     ) {
         viewModelScope.launch {
             spManager.updateSharedPreference(preferencesPair.key to preferencesPair.value)
