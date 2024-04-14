@@ -1,5 +1,6 @@
 package dev.vishalgaur.prefixer.domain.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.vishalgaur.prefixer.base.PrefValueType
@@ -54,7 +55,8 @@ internal class AllPreferencesViewModel : ViewModel() {
                     if (u == null || u is String) {
                         PrefValueType.StringType(u?.toString())
                     } else {
-                        throw IllegalArgumentException("Invalid type")
+                        Log.e(TAG, "Invalid value type for key: $t, value: $u")
+                        PrefValueType.StringType(u.toString())
                     }
                 }
             }
@@ -63,5 +65,9 @@ internal class AllPreferencesViewModel : ViewModel() {
             )
         }
         return prefList
+    }
+
+    companion object {
+        private const val TAG = "AllPreferencesViewModel"
     }
 }
