@@ -16,7 +16,7 @@ retrofit2 = "2.9.0"
 okHttp3 =  "4.11.0"
 gson = "2.10.1"
 mavenPublishVersion = "0.28.0"
-prefixer = "1.0.3"
+prefixer = "1.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
